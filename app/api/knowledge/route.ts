@@ -36,7 +36,6 @@ export async function POST(req: Request) {
         if (chunk.eventType === "text-generation") {
           controller.enqueue(encoder.encode(chunk.text));
         }
-        console.log(chunk);
       }
       controller.close();
     },

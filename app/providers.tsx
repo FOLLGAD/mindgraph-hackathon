@@ -20,7 +20,7 @@ export const SkillTreeProvider: React.FC<React.PropsWithChildren<{}>> = ({
     if (!skillTree) {
       return;
     }
-    const skillName = id.split("_")[1];
+    const skillName = id;
     localStorage.setItem(`${skillTree.name}_${skillName}`, score.toString());
     setScores((prevScores) => ({ ...prevScores, [id]: score }));
   };
@@ -29,9 +29,10 @@ export const SkillTreeProvider: React.FC<React.PropsWithChildren<{}>> = ({
     setSkillTree(tree);
     const newScores: Record<string, number> = {};
     tree.skills.forEach((skill) => {
-      const storedScore = localStorage.getItem(`${name}_${skill.name}`);
+      const lname = `${name}_${skill.name}`;
+      const storedScore = localStorage.getItem(lname.toLowerCase());
       if (storedScore !== null) {
-        newScores[`${name}_${skill.name}`] = parseInt(storedScore, 10);
+        newScores[skill.name.toLowerCase()] = parseInt(storedScore, 10);
       }
     });
     setScores(newScores);
