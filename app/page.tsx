@@ -1,12 +1,12 @@
 import Quiz from "@/components/Quiz";
-import { SkillTreeFlow } from "./components/flow";
+import { SkillTreeFlow } from "../components/flow";
 
 export default function Home() {
   return (
     <div className="flex flex-col min-h-screen bg-[#1a1a1a] text-white">
       <div className="flex flex-1 p-4 space-x-4">
         <div className="w-1/2 bg-[#242424] p-4 rounded-lg overflow-hidden">
-          <SkillTreeFlow key={"flow"} />
+          <SkillTreeFlow key={"flow"} onSkillSelected={() => { }} skillTree={[]} />
         </div>
         <div className="w-1/2 flex flex-col space-y-4">
           <div className="flex-1 bg-[#242424] p-4 rounded-lg overflow-y-auto">
