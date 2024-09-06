@@ -5,6 +5,7 @@ import { useEffect, useMemo, useState } from "react";
 import { extractSkillTree, SkillTree } from "@/components/SkillTree";
 import { fusionSkillTree } from "@/components/data";
 import { useParams } from "next/navigation";
+import { Sidebar } from "@/components/Sidebar/Sidebar";
 
 const parseXML = (xmlString: string): Document => {
   const parser = new DOMParser();
@@ -53,7 +54,9 @@ export default function CoursePage() {
       <div className="mt-10 ml-4 text-4xl text-white">{courseName}</div>
       <div className="flex flex-row">
         <div className="w-1/2">{skillTreeViz}</div>
-        <div className="w-1/2">{selectedSkill}</div>
+        <div className="w-1/2">
+          <Sidebar />
+        </div>
       </div>
     </div>
   );
