@@ -5,6 +5,7 @@ interface Skill {
 }
 export interface SkillTree {
   skills: Skill[];
+  name: string;
 }
 export const extractSkillTree = (xmlDoc: Document): SkillTree => {
   const skillTreeElement = xmlDoc.getElementsByTagName("skillTree")[0];
@@ -19,6 +20,7 @@ export const extractSkillTree = (xmlDoc: Document): SkillTree => {
       ).map((req) => req.getAttribute("skill") || "");
       return { name, displayName, requires };
     }),
+    name: skillTreeElement.getAttribute("name") || "",
   };
 
   return skillTree;
