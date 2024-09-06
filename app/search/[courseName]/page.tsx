@@ -6,15 +6,12 @@ import { extractSkillTree, SkillTree } from "@/components/SkillTree";
 import { fusionSkillTree } from "@/components/data";
 import { useParams } from "next/navigation";
 import { Sidebar } from "@/components/Sidebar/Sidebar";
+import { generateSkillTree } from "@/app/utils";
 
 const parseXML = (xmlString: string): Document => {
   const parser = new DOMParser();
   const xmlDoc = parser.parseFromString(xmlString, "text/xml");
   return xmlDoc;
-};
-
-const getSkillTree = (skillName: string): SkillTree => {
-  return extractSkillTree(parseXML(fusionSkillTree));
 };
 
 export default function CoursePage() {
@@ -25,7 +22,20 @@ export default function CoursePage() {
     [_courseName],
   );
 
-  const skillTree = useMemo(() => getSkillTree(courseName), [courseName]);
+  const [skillTree, setSkillTree] = useState<SkillTree>();
+
+  useEffect(() => {
+    const localstorage = localStorage.getItem(courseName.toLowerCase());
+    if (localstorage) {
+      setSkillTree(JSON.parse(localstorage));
+    }
+
+    generateSkillTree(courseName).then((skillTreeXML) => {
+      const st = extractSkillTree(parseXML(skillTreeXML));
+      localStorage.setItem(courseName.toLowerCase(), JSON.stringify(st));
+      setSkillTree(st);
+    });
+  }, [courseName]);
 
   const [selectedSkill, setSelectedSkill] = useState<string>();
 
@@ -58,7 +68,7 @@ export default function CoursePage() {
         </div>
         <div className="w-1/2 flex flex-col space-y-4">
           <div className="flex-1 bg-[#242424] p-4 rounded-lg overflow-y-auto">
-            <Sidebar />
+            <Sidebar selectedSkill={selectedSkill} />
           </div>
         </div>
       </div>

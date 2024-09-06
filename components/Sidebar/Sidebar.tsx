@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { Knowledge } from "./Knowledge";
 
-export const Sidebar = () => {
+export const Sidebar = ({ selectedSkill }: { selectedSkill: string }) => {
   const [currentTab, setCurrentTab] = useState<string>("knowledge");
+
   return (
     <div>
       {/* TODO: Replace with tabs component */}
@@ -10,6 +11,8 @@ export const Sidebar = () => {
         <div>Knowledge</div>
         <div>Quiz</div>
       </div>
+
+      <h1>{selectedSkill}</h1>
 
       {currentTab === "knowledge" && <Knowledge />}
       {currentTab === "quiz" && <div>Quiz</div>}
