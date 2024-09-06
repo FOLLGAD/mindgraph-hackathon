@@ -71,7 +71,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ isLoggedIn = true}) => {
     }, [isFocused])
 
     return (
-        <div className='relative w-1/5 flex flex-col justiy-start'>
+        <div className='flex flex-col justiy-between w-full'>
             <div className='relative h-10 z-10 rounded-md'>
                 <Input
                     disabled={isSearching || !isLoggedIn}
