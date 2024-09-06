@@ -71,7 +71,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ isLoggedIn = true }) => {
   }, [isFocused]);
 
   return (
-    <div className="relative w-1/5 flex flex-col justiy-start">
+    <div className="flex flex-col justiy-between w-full">
       <div className="relative h-10 z-10 rounded-md">
         <Input
           disabled={isSearching || !isLoggedIn}
@@ -109,39 +109,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ isLoggedIn = true }) => {
         </Button>
       </div>
 
-    return (
-        <div className='flex flex-col justiy-between w-full'>
-            <div className='relative h-10 z-10 rounded-md'>
-                <Input
-                    disabled={isSearching || !isLoggedIn}
-                    value={query}
-                    onChange={(e) => setQuery(e.target.value)}
-                    onKeyDown={(e) => {
-                        if (e.key === 'Enter') {
-                            setIsFocused(false)
-                            search()
-                        }
-
-                        if (e.key === 'Escape') {
-                            inputRef?.current?.blur()
-                            setIsFocused(false)
-                        }
-                    }}
-                    ref={inputRef}
-                    placeholder={isLoggedIn ? 'Explore a topic...' : 'Please log in to search'}
-                    className='absolute inset-0 h-full bg-[#333333] text-white placeholder-gray-400 border-none text-xs'
-                />
-
-                <Button
-                    disabled={isSearching || !isLoggedIn}
-                    size='sm'
-                    onClick={search}
-                    className='absolute right-0 inset-y-0 h-full rounded-l-none bg-[#333333] hover:bg-[#444444]'>
-                    {isSearching ? <Loader2 className='h-4 w-4 animate-spin text-white' /> : <Search className='h-4 w-4 text-white' />}
-                </Button>
-            </div>
-            
-            {/* {showResults && (
+      {/* {showResults && (
                 <div className='mt-1 flex items-center justify-start space-x-2'>
                     <div className='bg-gray-100 px-1.5 py-0.5 rounded-md'>
                         <p className='text-[10px]'>Search results for: <strong>{searchedQuery}</strong></p>
