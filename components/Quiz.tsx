@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import { MdOutlineSpaceBar } from "react-icons/md";
 
 interface QuizQuestion {
@@ -30,10 +30,10 @@ const Quiz: React.FC<QuizProps> = ({ topic }) => {
       setIsLoading(true);
       setError(null);
       try {
-        const response = await fetch('/api/quiz', {
-          method: 'POST',
+        const response = await fetch("/api/quiz", {
+          method: "POST",
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
           },
           body: JSON.stringify({ query: topic }),
         });
@@ -42,12 +42,14 @@ const Quiz: React.FC<QuizProps> = ({ topic }) => {
         }
         const data = await response.json();
         if (!data.questions || !Array.isArray(data.questions)) {
-          throw new Error('Invalid response format');
+          throw new Error("Invalid response format");
         }
         setQuestions(data.questions);
       } catch (error) {
-        console.error('Error fetching questions:', error);
-        setError(`Failed to load questions: ${error instanceof Error ? error.message : 'Unknown error'}`);
+        console.error("Error fetching questions:", error);
+        setError(
+          `Failed to load questions: ${error instanceof Error ? error.message : "Unknown error"}`,
+        );
       } finally {
         setIsLoading(false);
       }
@@ -61,10 +63,10 @@ const Quiz: React.FC<QuizProps> = ({ topic }) => {
     const currentQuestion = questions[currentQuestionIndex];
     if (currentQuestion) {
       if (answer === currentQuestion.correctAnswer) {
-        setAlert('Correct answer!');
-        setScore(prevScore => prevScore + 1);
+        setAlert("Correct answer!");
+        setScore((prevScore) => prevScore + 1);
       } else {
-        setAlert('Wrong answer');
+        setAlert("Wrong answer");
       }
     }
     setTimeout(loadNextQuestion, 1500);
@@ -74,7 +76,7 @@ const Quiz: React.FC<QuizProps> = ({ topic }) => {
     setSelectedAnswer(null);
     setAlert(null);
     if (currentQuestionIndex < questions.length - 1) {
-      setCurrentQuestionIndex(prevIndex => prevIndex + 1);
+      setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
     } else {
       setQuizCompleted(true);
     }
@@ -90,7 +92,7 @@ const Quiz: React.FC<QuizProps> = ({ topic }) => {
   };
 
   if (isLoading) {
-    return <div className="text-white">Loading...</div>;
+    return <div className="text-white">Loading quiz...</div>;
   }
 
   if (error) {
@@ -112,8 +114,12 @@ const Quiz: React.FC<QuizProps> = ({ topic }) => {
     return (
       <div className="quiz-container bg-[#1C1C1C] text-white p-6 rounded-lg max-w-2xl mx-auto">
         <h2 className="text-2xl font-bold mb-6">Quiz Completed!</h2>
-        <p className="text-xl mb-4">Your score: {score} out of {questions.length}</p>
-        <p className="text-lg mb-6">Percentage: {((score / questions.length) * 100).toFixed(2)}%</p>
+        <p className="text-xl mb-4">
+          Your score: {score} out of {questions.length}
+        </p>
+        <p className="text-lg mb-6">
+          Percentage: {((score / questions.length) * 100).toFixed(2)}%
+        </p>
         <button
           className="bg-[#6677FF] text-white p-4 rounded-lg cursor-pointer hover:bg-[#5566EE]"
           onClick={restartQuiz}
@@ -133,28 +139,31 @@ const Quiz: React.FC<QuizProps> = ({ topic }) => {
   return (
     <div className="quiz-container bg-[#1C1C1C] text-white p-6 rounded-lg max-w-2xl mx-auto">
       <h2 className="text-2xl font-bold mb-6">{currentQuestion.question}</h2>
-      <p className="text-sm mb-4">Question {currentQuestionIndex + 1} of {questions.length}</p>
-      {alert && (
-        <div className="alert bg-[#6677FF] text-white p-4 rounded-lg mb-4">
-          {alert}
-        </div>
-      )}
+      <p className="text-sm mb-4">
+        Question {currentQuestionIndex + 1} of {questions.length}
+      </p>
       <ul className="space-y-4">
         {Object.entries(currentQuestion.options).map(([key, value], index) => (
           <li
             key={key}
             className={`option p-4 rounded-lg cursor-pointer transition-colors
-              ${selectedAnswer === key ? 'bg-[#6677FF] text-white' : 'bg-[#333333] hover:bg-[#444444]'}`}
-            onClick={() => handleAnswerSelect(key)}
+              ${
+                selectedAnswer === key
+                  ? key === currentQuestion.correctAnswer
+                    ? "bg-green-400 text-white"
+                    : "bg-red-400"
+                  : "bg-[#333333] hover:bg-[#444444]"
+              }`}
+            onClick={() => !selectedAnswer && handleAnswerSelect(key)}
           >
             <span className="mr-3 font-bold">{index + 1}</span>
             {value}
           </li>
         ))}
         <li
-          className="flex items-center justify-start option p-4 rounded-lg cursor-pointer transition-colors bg-[#333333] hover:bg-[#444444]"
+          className="flex items-center justify-start option p-4 rounded-lg cursor-pointer transition-colors bg-[#333333] hover:bg-[#444444] gap-2"
           onClick={() => {
-            setAlert('Question skipped');
+            setAlert("Question skipped");
             loadNextQuestion();
           }}
         >
@@ -162,6 +171,11 @@ const Quiz: React.FC<QuizProps> = ({ topic }) => {
           Skip question
         </li>
       </ul>
+      {alert && (
+        <div className="alert bg-[#6677FF] text-white p-4 rounded-lg  mt-4">
+          {alert}
+        </div>
+      )}
     </div>
   );
 };

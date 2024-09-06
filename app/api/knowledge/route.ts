@@ -10,7 +10,7 @@ export async function POST(req: Request) {
   const { skillName, skillTree, withSources = false } = await req.json();
 
   const response = await cohere.chatStream({
-    model: "command-r-plus-08-2024",
+    model: "command-r-08-2024",
     message: `what is ${skillName} in the field of ${skillTree.name}`,
 
     preamble:
