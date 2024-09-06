@@ -1,0 +1,84 @@
+<skillTree name="NuclearFusion">
+  <skill name="AtomicStructure"></skill>
+  <skill name="NuclearPhysicsBasics"></skill>
+  <skill name="PlasmaFundamentals"></skill>
+
+  <skill name="FusionReactions">
+    <requires skill="AtomicStructure"/>
+    <requires skill="NuclearPhysicsBasics"/>
+  </skill>
+
+  <skill name="IsotopesAndFuels">
+    <requires skill="AtomicStructure"/>
+  </skill>
+
+  <skill name="PlasmaConfinement">
+    <requires skill="PlasmaFundamentals"/>
+  </skill>
+
+  <skill name="MagneticConfinement">
+    <requires skill="PlasmaConfinement"/>
+  </skill>
+
+  <skill name="InertialConfinement">
+    <requires skill="PlasmaConfinement"/>
+  </skill>
+
+  <skill name="TokamakDesign">
+    <requires skill="MagneticConfinement"/>
+  </skill>
+
+  <skill name="StellaratorDesign">
+    <requires skill="MagneticConfinement"/>
+  </skill>
+
+  <skill name="LaserFusion">
+    <requires skill="InertialConfinement"/>
+  </skill>
+
+  <skill name="FusionDiagnostics">
+    <requires skill="FusionReactions"/>
+    <requires skill="PlasmaConfinement"/>
+  </skill>
+
+  <skill name="TritiumBreeding">
+    <requires skill="IsotopesAndFuels"/>
+    <requires skill="FusionReactions"/>
+  </skill>
+
+  <skill name="Neutronics">
+    <requires skill="FusionReactions"/>
+  </skill>
+
+  <skill name="FusionMaterials">
+    <requires skill="Neutronics"/>
+  </skill>
+
+  <skill name="FusionEnergyConversion">
+    <requires skill="FusionReactions"/>
+    <requires skill="NuclearPhysicsBasics"/>
+  </skill>
+
+  <skill name="FusionSafety">
+    <requires skill="TritiumBreeding"/>
+    <requires skill="Neutronics"/>
+  </skill>
+
+  <skill name="AdvancedFuelCycles">
+    <requires skill="IsotopesAndFuels"/>
+    <requires skill="FusionReactions"/>
+    <requires skill="TritiumBreeding"/>
+  </skill>
+
+  <skill name="FusionEconomics">
+    <requires skill="FusionEnergyConversion"/>
+    <requires skill="FusionMaterials"/>
+  </skill>
+
+  <skill name="FutureFusionConcepts">
+    <requires skill="TokamakDesign"/>
+    <requires skill="StelleratorDesign"/>
+    <requires skill="LaserFusion"/>
+    <requires skill="AdvancedFuelCycles"/>
+  </skill>
+</skillTree>
