@@ -21,7 +21,10 @@ export const SkillTreeProvider: React.FC<React.PropsWithChildren<{}>> = ({
       return;
     }
     const skillName = id;
-    localStorage.setItem(`${skillTree.name}_${skillName}`, score.toString());
+    localStorage.setItem(
+      `${skillTree.name}_${skillName}`.toLowerCase(),
+      score.toString(),
+    );
     setScores((prevScores) => ({ ...prevScores, [id]: score }));
   };
 
