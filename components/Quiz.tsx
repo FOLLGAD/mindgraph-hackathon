@@ -30,7 +30,7 @@ const Quiz: React.FC<QuizProps> = ({ topic }) => {
       setIsLoading(true);
       setError(null);
       try {
-        const response = await fetch('/api/generate-quiz', {
+        const response = await fetch('/api/quiz', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

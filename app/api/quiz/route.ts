@@ -41,8 +41,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                         },
                         "correctAnswer": "A/B/C/D"
                     }
-            \`\`\`
-          `
+                    \`\`\`
+                `
                     },
                     { role: "user", content: query }
                 ],
