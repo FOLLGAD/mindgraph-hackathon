@@ -1,5 +1,7 @@
 "use client";
 
+import { useSkillContext } from "@/app/providers";
+import { useParams } from "next/navigation";
 import React, { useState, useEffect } from "react";
 import { MdOutlineSpaceBar } from "react-icons/md";
 
@@ -19,6 +21,9 @@ interface QuizProps {
 }
 
 const Quiz: React.FC<QuizProps> = ({ topic }) => {
+  const { selectedSkill } = useParams();
+  const realSkillName = decodeURIComponent(selectedSkill as string);
+
   const [questions, setQuestions] = useState<QuizQuestion[]>([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
@@ -27,6 +32,7 @@ const Quiz: React.FC<QuizProps> = ({ topic }) => {
   const [quizCompleted, setQuizCompleted] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const { updateSkill } = useSkillContext();
 
   useEffect(() => {
     const fetchQuestions = async () => {
@@ -45,7 +51,7 @@ const Quiz: React.FC<QuizProps> = ({ topic }) => {
         }
         const data = await response.json();
         if (!Array.isArray(data)) {
-          throw new Error('Invalid response format');
+          throw new Error("Invalid response format");
         }
         setQuestions(data);
       } catch (error) {
@@ -69,7 +75,9 @@ const Quiz: React.FC<QuizProps> = ({ topic }) => {
         setAlert("Correct answer!");
         setScore((prevScore) => prevScore + 1);
       } else {
-        setAlert(`Wrong answer. The correct answer was ${currentQuestion.correctAnswer}.`);
+        setAlert(
+          `Wrong answer. The correct answer was ${currentQuestion.correctAnswer}.`,
+        );
       }
     }
     setTimeout(loadNextQuestion, 2000);
@@ -82,6 +90,7 @@ const Quiz: React.FC<QuizProps> = ({ topic }) => {
       setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
     } else {
       setQuizCompleted(true);
+      updateSkill(realSkillName, score * 10);
     }
   };
 

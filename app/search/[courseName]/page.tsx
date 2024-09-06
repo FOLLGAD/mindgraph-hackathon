@@ -7,6 +7,7 @@ import { fusionSkillTree } from "@/components/data";
 import { useParams } from "next/navigation";
 import { Sidebar } from "@/components/Sidebar/Sidebar";
 import { generateSkillTree } from "@/app/utils";
+import { useSkillContext } from "@/app/providers";
 
 const parseXML = (xmlString: string): Document => {
   const parser = new DOMParser();
@@ -17,6 +18,7 @@ const parseXML = (xmlString: string): Document => {
 export default function CoursePage() {
   const { courseName: _courseName, selectedSkill, tab } = useParams();
   const router = useRouter();
+  const ctx = useSkillContext();
 
   const courseName = useMemo(
     () => decodeURIComponent(_courseName as string),
@@ -28,13 +30,16 @@ export default function CoursePage() {
   useEffect(() => {
     const localstorage = localStorage.getItem(courseName.toLowerCase());
     if (localstorage) {
-      setSkillTree(JSON.parse(localstorage));
+      const j = JSON.parse(localstorage);
+      setSkillTree(j);
+      ctx.setSkillTree(courseName, j);
     }
 
     generateSkillTree(courseName).then((skillTreeXML) => {
       const st = extractSkillTree(parseXML(skillTreeXML));
       localStorage.setItem(courseName.toLowerCase(), JSON.stringify(st));
       setSkillTree(st);
+      ctx.setSkillTree(courseName, st);
     });
   }, [courseName]);
 

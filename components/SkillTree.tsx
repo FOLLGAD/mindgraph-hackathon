@@ -1,4 +1,4 @@
-interface Skill {
+export interface Skill {
   name: string;
   displayName: string;
   requires: string[];
