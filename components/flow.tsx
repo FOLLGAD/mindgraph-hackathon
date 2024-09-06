@@ -40,7 +40,6 @@ const getNodesAndEdges = (
 };
 
 const getColorForScore = (score: number): string => {
-  console.log(score);
   if (score >= 80) return "#4CAF50"; // Green for high scores
   if (score >= 50) return "#FFC107"; // Yellow for medium scores
   if (score >= 20) return "#CC4336"; // Red for low scores
