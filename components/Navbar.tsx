@@ -16,20 +16,24 @@ export default function Navbar() {
                     <SearchBar />
                 </div>
                 <div className='flex items-start space-x-2 mr-2'>
-                    <Button
-                        size='sm'
-                        variant='ghost'
-                        className='text-white bg-[#333333]'
-                    >
-                        Discovery
-                    </Button>
-                    <Button
-                        size='sm'
-                        variant='ghost'
-                        className='text-[#888888] bg-[#252525]'
-                    >
-                        Quiz
-                    </Button>
+                    <Link href="/discovery">
+                        <Button
+                            size='sm'
+                            variant='ghost'
+                            className='text-white bg-[#333333]'
+                        >
+                            Discovery
+                        </Button>
+                    </Link>
+                    <Link href="/quiz">
+                        <Button
+                            size='sm'
+                            variant='ghost'
+                            className='text-[#888888] bg-[#252525]'
+                        >
+                            Quiz
+                        </Button>
+                    </Link>
                 </div>
             </div>
 

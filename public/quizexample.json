@@ -1,11 +1,54 @@
 {
-    "question": "What is the primary function of the mitochondria in a cell?",
-    "options": {
-      "A": "To store genetic information",
-      "B": "To produce energy",
-      "C": "To digest cellular waste",
-      "D": "To transport proteins"
-    },
-    "correctAnswer": "B"
-  }
-  
+    "questions": [
+        {
+            "question": "What is the primary function of the mitochondria in a cell?",
+            "options": {
+                "A": "To store genetic information",
+                "B": "To produce energy",
+                "C": "To digest cellular waste",
+                "D": "To transport proteins"
+            },
+            "correctAnswer": "B"
+        },
+        {
+            "question": "Which planet is known as the Red Planet?",
+            "options": {
+                "A": "Earth",
+                "B": "Jupiter",
+                "C": "Mars",
+                "D": "Venus"
+            },
+            "correctAnswer": "C"
+        },
+        {
+            "question": "What is the chemical symbol for water?",
+            "options": {
+                "A": "O2",
+                "B": "H2",
+                "C": "H2O",
+                "D": "CO2"
+            },
+            "correctAnswer": "C"
+        },
+        {
+            "question": "Who wrote 'Romeo and Juliet'?",
+            "options": {
+                "A": "Charles Dickens",
+                "B": "William Shakespeare",
+                "C": "Mark Twain",
+                "D": "Jane Austen"
+            },
+            "correctAnswer": "B"
+        },
+        {
+            "question": "What is the capital city of France?",
+            "options": {
+                "A": "Berlin",
+                "B": "Madrid",
+                "C": "Paris",
+                "D": "Rome"
+            },
+            "correctAnswer": "C"
+        }
+    ]
+}
