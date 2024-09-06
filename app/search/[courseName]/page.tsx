@@ -15,7 +15,7 @@ const parseXML = (xmlString: string): Document => {
 };
 
 export default function CoursePage() {
-  const { courseName: _courseName } = useParams();
+  const { courseName: _courseName, tab } = useParams();
 
   const courseName = useMemo(
     () => decodeURIComponent(_courseName as string),
@@ -68,7 +68,7 @@ export default function CoursePage() {
         </div>
         <div className="w-1/2 flex flex-col space-y-4">
           <div className="flex-1 bg-[#242424] p-4 rounded-lg overflow-y-auto">
-            <Sidebar selectedSkill={selectedSkill} />
+            {!!selectedSkill && <Sidebar selectedSkill={selectedSkill} />}
           </div>
         </div>
       </div>
