@@ -50,10 +50,7 @@ const Quiz: React.FC<QuizProps> = ({ topic }) => {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
         const data = await response.json();
-        if (!Array.isArray(data)) {
-          throw new Error("Invalid response format");
-        }
-        setQuestions(data);
+        setQuestions(data.questions);
       } catch (error) {
         console.error("Error fetching questions:", error);
         setError(
