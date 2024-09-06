@@ -22,7 +22,11 @@ export const Sidebar = ({
       <h1 className="text-2xl font-bold mb-6 mt-4">{selectedSkill}</h1>
 
       {tab === "knowledge" && (
-        <Knowledge skillTree={skillTree} selectedSkill={selectedSkill} />
+        <Knowledge
+          skillTree={skillTree}
+          selectedSkill={selectedSkill}
+          key={selectedSkill}
+        />
       )}
       {tab === "quiz" && <div className="p-4">Quiz component here</div>}
     </div>
