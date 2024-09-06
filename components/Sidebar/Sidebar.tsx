@@ -6,7 +6,7 @@ export const Sidebar = () => {
   return (
     <div>
       {/* TODO: Replace with tabs component */}
-      <div className="flex flex-col">
+      <div className="flex flex-row gap-2">
         <div>Knowledge</div>
         <div>Quiz</div>
       </div>

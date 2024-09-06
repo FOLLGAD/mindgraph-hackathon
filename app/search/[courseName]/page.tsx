@@ -50,12 +50,16 @@ export default function CoursePage() {
   }
 
   return (
-    <div>
+    <div className="flex flex-col min-h-screen bg-[#1a1a1a] text-white">
       <div className="mt-10 ml-4 text-4xl text-white">{courseName}</div>
-      <div className="flex flex-row">
-        <div className="w-1/2">{skillTreeViz}</div>
-        <div className="w-1/2">
-          <Sidebar />
+      <div className="flex flex-1 p-4 space-x-4">
+        <div className="w-1/2 bg-[#242424] p-4 rounded-lg overflow-hidden">
+          {skillTreeViz}
+        </div>
+        <div className="w-1/2 flex flex-col space-y-4">
+          <div className="flex-1 bg-[#242424] p-4 rounded-lg overflow-y-auto">
+            <Sidebar />
+          </div>
         </div>
       </div>
     </div>
