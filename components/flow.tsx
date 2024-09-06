@@ -1,5 +1,3 @@
-"use client";
-
 import React, { useState, useEffect, useCallback } from "react";
 
 import {
@@ -95,7 +93,7 @@ export const SkillTreeFlow: React.FC<{
   }, []);
 
   const onSelectionChange: OnSelectionChangeFunc = useCallback((nodes) => {
-    onSkillSelected((nodes.nodes[0]?.data.label as string) || "");
+    onSkillSelected((nodes.nodes[0]?.id as string) || "");
   }, []);
 
   return (

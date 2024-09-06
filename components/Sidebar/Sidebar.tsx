@@ -1,34 +1,35 @@
 import { Knowledge } from "./Knowledge";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { SkillTree } from "../SkillTree";
+import Link from "next/link";
 
-export const Sidebar = ({
-  selectedSkill,
-  skillTree,
-}: {
-  selectedSkill: string;
-  skillTree: SkillTree;
-}) => {
-  const { tab } = useParams();
+export const Sidebar = ({ skillTree }: { skillTree: SkillTree }) => {
+  const { tab, courseName, selectedSkill } = useParams();
+  const router = useRouter();
+
+  const realSelectedSkill = decodeURIComponent(selectedSkill as string);
+
+  const skillName = skillTree.skills.find(
+    (skill) => skill.name === realSelectedSkill,
+  )?.displayName;
 
   return (
     <div>
       {/* TODO: Replace with tabs component */}
       <div className="flex flex-row gap-2">
-        <div className="p-4 py-2   rounded bg-gray-500">Knowledge</div>
-        <div className="p-4 py-2   rounded bg-gray-500">Quiz</div>
+        <Link href={`/search/${courseName}/${selectedSkill}/knowledge`}>
+          <div className="p-4 py-2 rounded bg-gray-500">Knowledge</div>
+        </Link>
+        <Link href={`/search/${courseName}/${selectedSkill}/quiz`}>
+          <div className="p-4 py-2 rounded bg-gray-500">Quiz</div>
+        </Link>
       </div>
 
-      <h1 className="text-2xl font-bold mb-6 mt-4">{selectedSkill}</h1>
+      <h1 className="text-2xl font-bold mb-6 mt-4">{skillName}</h1>
 
-      {tab === "knowledge" && (
-        <Knowledge
-          skillTree={skillTree}
-          selectedSkill={selectedSkill}
-          key={selectedSkill}
-        />
-      )}
+      {tab === "knowledge" && <Knowledge skillTree={skillTree} />}
       {tab === "quiz" && <div className="p-4">Quiz component here</div>}
+      {!tab && <p>Select a tab to view the content.</p>}
     </div>
   );
 };
