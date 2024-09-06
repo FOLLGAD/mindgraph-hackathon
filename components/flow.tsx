@@ -1,60 +1,39 @@
-"use client";
 import React, { useState, useEffect, useCallback } from "react";
 
 import {
   ReactFlow,
-  Controls,
-  Background,
   useNodesState,
   useEdgesState,
   MarkerType,
   Node,
   Edge,
-  ConnectionLineType,
   OnSelectionChangeFunc,
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
 import dagre from "dagre";
-import { fusionSkillTree } from "./skilltree";
+import { SkillTree } from "./SkillTree";
 
 const NODE_WIDTH = 172;
 const NODE_HEIGHT = 36;
 
-const parseXML = (xmlString: string): Document => {
-  const parser = new DOMParser();
-  const xmlDoc = parser.parseFromString(xmlString, "text/xml");
-  return xmlDoc;
-};
-
-const extractSkillTree = (
-  xmlDoc: Document,
+const getNodesAndEdges = (
+  skillTree: SkillTree,
 ): { nodes: Node[]; edges: Edge[] } => {
-  const skillTree = xmlDoc.getElementsByTagName("skillTree")[0];
-  const skills = skillTree.getElementsByTagName("skill");
-  const nodes: Node[] = [];
-  const edges: Edge[] = [];
+  const nodes: Node[] = skillTree.skills.map((skill) => ({
+    id: skill.name,
+    data: { label: skill.displayName },
+    position: { x: 0, y: 0 },
+  }));
 
-  Array.from(skills).forEach((skill) => {
-    const skillName = skill.getAttribute("name") || "";
-    const displayName = skill.getAttribute("displayName") || skillName;
-    nodes.push({
-      id: skillName,
-      data: { label: displayName },
-      position: { x: 0, y: 0 },
-    });
-
-    const requires = skill.getElementsByTagName("requires");
-    Array.from(requires).forEach((req) => {
-      const source = req.getAttribute("skill") || "";
-      edges.push({
-        id: `${source}-${skillName}`,
-        source,
-        target: skillName,
-        // type: "straight",
-        markerEnd: { type: MarkerType.ArrowClosed },
-      });
-    });
-  });
+  const edges: Edge[] = skillTree.skills.flatMap((skill) =>
+    skill.requires.map((source) => ({
+      id: `${source}-${skill.name}`,
+      source,
+      target: skill.name,
+      animated: true,
+      markerEnd: { type: MarkerType.ArrowClosed },
+    })),
+  );
 
   return { nodes, edges };
 };
@@ -94,17 +73,16 @@ const getLayoutedElements = (
   return { nodes, edges };
 };
 
-export const SkillTreeFlow: React.FC = () => {
+export const SkillTreeFlow: React.FC<{
+  onSkillSelected: (skill: string) => void;
+  skillTree: SkillTree;
+}> = ({ onSkillSelected, skillTree }) => {
   const [nodes, setNodes, onNodesChange] = useNodesState<Node>([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState<Edge>([]);
 
   useEffect(() => {
-    // In a real application, you would fetch this XML from a file or API
-    const xmlString = fusionSkillTree;
-
-    const xmlDoc = parseXML(xmlString);
     const { nodes: initialNodes, edges: initialEdges } =
-      extractSkillTree(xmlDoc);
+      getNodesAndEdges(skillTree);
     const { nodes: layoutedNodes, edges: layoutedEdges } = getLayoutedElements(
       initialNodes,
       initialEdges,
@@ -115,7 +93,7 @@ export const SkillTreeFlow: React.FC = () => {
   }, []);
 
   const onSelectionChange: OnSelectionChangeFunc = useCallback((nodes) => {
-    console.log(nodes.nodes[0]?.data.label);
+    onSkillSelected((nodes.nodes[0]?.data.label as string) || "");
   }, []);
 
   return (
