@@ -1,8 +1,14 @@
-import { useState } from "react";
 import { Knowledge } from "./Knowledge";
 import { useParams } from "next/navigation";
+import { SkillTree } from "../SkillTree";
 
-export const Sidebar = ({ selectedSkill }: { selectedSkill: string }) => {
+export const Sidebar = ({
+  selectedSkill,
+  skillTree,
+}: {
+  selectedSkill: string;
+  skillTree: SkillTree;
+}) => {
   const { tab } = useParams();
 
   return (
@@ -15,7 +21,9 @@ export const Sidebar = ({ selectedSkill }: { selectedSkill: string }) => {
 
       <h1 className="text-2xl font-bold mb-6 mt-4">{selectedSkill}</h1>
 
-      {tab === "knowledge" && <Knowledge />}
+      {tab === "knowledge" && (
+        <Knowledge skillTree={skillTree} selectedSkill={selectedSkill} />
+      )}
       {tab === "quiz" && <div className="p-4">Quiz component here</div>}
     </div>
   );

@@ -68,7 +68,9 @@ export default function CoursePage() {
         </div>
         <div className="w-1/2 flex flex-col space-y-4">
           <div className="flex-1 bg-[#242424] p-4 rounded-lg overflow-y-auto">
-            {!!selectedSkill && <Sidebar selectedSkill={selectedSkill} />}
+            {!!selectedSkill && (
+              <Sidebar selectedSkill={selectedSkill} skillTree={skillTree} />
+            )}
           </div>
         </div>
       </div>
