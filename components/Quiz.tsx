@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import React, { useState, useEffect } from 'react';
 import { MdOutlineSpaceBar } from "react-icons/md";
@@ -6,7 +6,10 @@ import { MdOutlineSpaceBar } from "react-icons/md";
 interface QuizQuestion {
   question: string;
   options: {
-    [key: string]: string;
+    A: string;
+    B: string;
+    C: string;
+    D: string;
   };
   correctAnswer: string;
 }
@@ -41,10 +44,10 @@ const Quiz: React.FC<QuizProps> = ({ topic }) => {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
         const data = await response.json();
-        if (!data.questions || !Array.isArray(data.questions)) {
+        if (!Array.isArray(data)) {
           throw new Error('Invalid response format');
         }
-        setQuestions(data.questions);
+        setQuestions(data);
       } catch (error) {
         console.error('Error fetching questions:', error);
         setError(`Failed to load questions: ${error instanceof Error ? error.message : 'Unknown error'}`);
@@ -64,10 +67,10 @@ const Quiz: React.FC<QuizProps> = ({ topic }) => {
         setAlert('Correct answer!');
         setScore(prevScore => prevScore + 1);
       } else {
-        setAlert('Wrong answer');
+        setAlert(`Wrong answer. The correct answer was ${currentQuestion.correctAnswer}.`);
       }
     }
-    setTimeout(loadNextQuestion, 1500);
+    setTimeout(loadNextQuestion, 2000);
   };
 
   const loadNextQuestion = () => {
@@ -135,19 +138,19 @@ const Quiz: React.FC<QuizProps> = ({ topic }) => {
       <h2 className="text-2xl font-bold mb-6">{currentQuestion.question}</h2>
       <p className="text-sm mb-4">Question {currentQuestionIndex + 1} of {questions.length}</p>
       {alert && (
-        <div className="alert bg-[#6677FF] text-white p-4 rounded-lg mb-4">
+        <div className={`alert p-4 rounded-lg mb-4 ${alert.startsWith('Correct') ? 'bg-green-500' : 'bg-red-500'}`}>
           {alert}
         </div>
       )}
       <ul className="space-y-4">
-        {Object.entries(currentQuestion.options).map(([key, value], index) => (
+        {Object.entries(currentQuestion.options).map(([key, value]) => (
           <li
             key={key}
             className={`option p-4 rounded-lg cursor-pointer transition-colors
               ${selectedAnswer === key ? 'bg-[#6677FF] text-white' : 'bg-[#333333] hover:bg-[#444444]'}`}
             onClick={() => handleAnswerSelect(key)}
           >
-            <span className="mr-3 font-bold">{index + 1}</span>
+            <span className="mr-3 font-bold">{key}</span>
             {value}
           </li>
         ))}
@@ -158,7 +161,7 @@ const Quiz: React.FC<QuizProps> = ({ topic }) => {
             loadNextQuestion();
           }}
         >
-          <MdOutlineSpaceBar />
+          <MdOutlineSpaceBar className="mr-2" />
           Skip question
         </li>
       </ul>
