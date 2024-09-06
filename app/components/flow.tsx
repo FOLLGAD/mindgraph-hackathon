@@ -11,9 +11,11 @@ import {
   Node,
   Edge,
   ConnectionLineType,
+  OnSelectionChangeFunc,
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
 import dagre from "dagre";
+import { fusionSkillTree } from "./skilltree";
 
 const NODE_WIDTH = 172;
 const NODE_HEIGHT = 36;
@@ -34,9 +36,10 @@ const extractSkillTree = (
 
   Array.from(skills).forEach((skill) => {
     const skillName = skill.getAttribute("name") || "";
+    const displayName = skill.getAttribute("displayName") || skillName;
     nodes.push({
       id: skillName,
-      data: { label: skillName },
+      data: { label: displayName },
       position: { x: 0, y: 0 },
     });
 
@@ -82,6 +85,10 @@ const getLayoutedElements = (
       x: nodeWithPosition.x - NODE_WIDTH / 2,
       y: nodeWithPosition.y - NODE_HEIGHT / 2,
     };
+    node.style = {
+      ...(node.style ?? {}),
+      background: "#339933",
+    };
   });
 
   return { nodes, edges };
@@ -93,91 +100,7 @@ export const SkillTreeFlow: React.FC = () => {
 
   useEffect(() => {
     // In a real application, you would fetch this XML from a file or API
-    const xmlString = `<skillTree name="NuclearFusion">
-      <skill name="AtomicStructure"></skill>
-      <skill name="NuclearPhysicsBasics"></skill>
-      <skill name="PlasmaFundamentals"></skill>
-
-      <skill name="FusionReactions">
-        <requires skill="AtomicStructure"/>
-        <requires skill="NuclearPhysicsBasics"/>
-      </skill>
-
-      <skill name="IsotopesAndFuels">
-        <requires skill="AtomicStructure"/>
-      </skill>
-
-      <skill name="PlasmaConfinement">
-        <requires skill="PlasmaFundamentals"/>
-      </skill>
-
-      <skill name="MagneticConfinement">
-        <requires skill="PlasmaConfinement"/>
-      </skill>
-
-      <skill name="InertialConfinement">
-        <requires skill="PlasmaConfinement"/>
-      </skill>
-
-      <skill name="TokamakDesign">
-        <requires skill="MagneticConfinement"/>
-      </skill>
-
-      <skill name="StellaratorDesign">
-        <requires skill="MagneticConfinement"/>
-      </skill>
-
-      <skill name="LaserFusion">
-        <requires skill="InertialConfinement"/>
-      </skill>
-
-      <skill name="FusionDiagnostics">
-        <requires skill="FusionReactions"/>
-        <requires skill="PlasmaConfinement"/>
-      </skill>
-
-      <skill name="TritiumBreeding">
-        <requires skill="IsotopesAndFuels"/>
-        <requires skill="FusionReactions"/>
-      </skill>
-
-      <skill name="Neutronics">
-        <requires skill="FusionReactions"/>
-      </skill>
-
-      <skill name="FusionMaterials">
-        <requires skill="Neutronics"/>
-      </skill>
-
-      <skill name="FusionEnergyConversion">
-        <requires skill="FusionReactions"/>
-        <requires skill="NuclearPhysicsBasics"/>
-      </skill>
-
-      <skill name="FusionSafety">
-        <requires skill="TritiumBreeding"/>
-        <requires skill="Neutronics"/>
-      </skill>
-
-      <skill name="AdvancedFuelCycles">
-        <requires skill="IsotopesAndFuels"/>
-        <requires skill="FusionReactions"/>
-        <requires skill="TritiumBreeding"/>
-      </skill>
-
-      <skill name="FusionEconomics">
-        <requires skill="FusionEnergyConversion"/>
-        <requires skill="FusionMaterials"/>
-      </skill>
-
-      <skill name="FutureFusionConcepts">
-        <requires skill="TokamakDesign"/>
-        <requires skill="StelleratorDesign"/>
-        <requires skill="LaserFusion"/>
-        <requires skill="AdvancedFuelCycles"/>
-      </skill>
-    </skillTree>
-    `;
+    const xmlString = fusionSkillTree;
 
     const xmlDoc = parseXML(xmlString);
     const { nodes: initialNodes, edges: initialEdges } =
@@ -191,14 +114,23 @@ export const SkillTreeFlow: React.FC = () => {
     setEdges(layoutedEdges);
   }, []);
 
+  const onSelectionChange: OnSelectionChangeFunc = useCallback((nodes) => {
+    console.log(nodes.nodes[0]?.data.label);
+  }, []);
+
   return (
-    <div style={{ width: "100%", height: "500px" }}>
+    <div style={{ width: "100%", height: "80vh" }}>
       <ReactFlow
         nodes={nodes}
         edges={edges}
         onNodesChange={onNodesChange}
         onEdgesChange={onEdgesChange}
         fitView
+        nodesDraggable={false}
+        nodesConnectable={false}
+        elementsSelectable={true}
+        nodesFocusable={true}
+        onSelectionChange={onSelectionChange}
       ></ReactFlow>
     </div>
   );

@@ -1,5 +1,9 @@
 import { SkillTreeFlow } from "./components/flow";
 
 export default function Home() {
-  return <SkillTreeFlow key={"flow"} />;
+  return (
+    <div className="h-full">
+      <SkillTreeFlow key="flow" />
+    </div>
+  );
 }
