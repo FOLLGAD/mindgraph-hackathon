@@ -2,6 +2,7 @@ import { Knowledge } from "./Knowledge";
 import { useParams, useRouter } from "next/navigation";
 import { SkillTree } from "../SkillTree";
 import Link from "next/link";
+import Quiz from "../Quiz";
 
 export const Sidebar = ({ skillTree }: { skillTree: SkillTree }) => {
   const { tab, courseName, selectedSkill } = useParams();
@@ -28,7 +29,7 @@ export const Sidebar = ({ skillTree }: { skillTree: SkillTree }) => {
       <h1 className="text-2xl font-bold mb-6 mt-4">{skillName}</h1>
 
       {tab === "knowledge" && <Knowledge skillTree={skillTree} />}
-      {tab === "quiz" && <div className="p-4">Quiz component here</div>}
+      {tab === "quiz" && <div className="p-4"><Quiz topic={realSelectedSkill} /></div>}
       {!tab && <p>Select a tab to view the content.</p>}
     </div>
   );
