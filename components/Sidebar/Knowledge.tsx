@@ -1,22 +1,28 @@
 import { SkillTree } from "@/components/SkillTree";
+import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import Markdown from "react-markdown";
 
-export const Knowledge = ({
-  skillTree,
-  selectedSkill,
-}: {
-  skillTree: SkillTree;
-  selectedSkill: string;
-}) => {
+export const Knowledge = ({ skillTree }: { skillTree: SkillTree }) => {
+  const { courseName, selectedSkill } = useParams();
+  const realSelectedSkill = decodeURIComponent(selectedSkill as string);
+
+  const skillName = skillTree.skills.find(
+    (skill) => skill.name === realSelectedSkill,
+  )?.displayName;
+
   const [knowledge, setKnowledge] = useState<string>("");
 
   useEffect(() => {
+    if (!skillName) {
+      return;
+    }
     const abortController = new AbortController();
     fetch(`/api/knowledge`, {
       signal: abortController.signal,
       method: "POST",
       body: JSON.stringify({
-        skillName: selectedSkill,
+        skillName,
         skillTree,
       }),
       headers: {
@@ -46,9 +52,17 @@ export const Knowledge = ({
     });
 
     return () => {
-      abortController.abort();
+      abortController.abort("effect dismounted");
     };
   }, []);
 
-  return <div>{knowledge}</div>;
+  if (!knowledge) {
+    return <div>Loading...</div>;
+  }
+
+  return (
+    <div>
+      <Markdown>{knowledge}</Markdown>
+    </div>
+  );
 };

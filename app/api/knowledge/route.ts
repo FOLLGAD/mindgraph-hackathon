@@ -7,7 +7,7 @@ const cohere = new CohereClient({
 const encoder = new TextEncoder();
 
 export async function POST(req: Request) {
-  const { skillName, skillTree } = await req.json();
+  const { skillName, skillTree, withSources = false } = await req.json();
 
   const response = await cohere.chatStream({
     model: "command-r-plus-08-2024",
@@ -24,7 +24,7 @@ export async function POST(req: Request) {
     ],
     maxTokens: 1000,
     promptTruncation: "AUTO",
-    connectors: [{ id: "web-search" }],
+    connectors: withSources ? [{ id: "web-search" }] : undefined,
   });
 
   const encoder = new TextEncoder();

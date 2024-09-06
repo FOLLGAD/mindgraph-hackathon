@@ -1,5 +1,5 @@
 "use client";
-import { redirect } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import { SkillTreeFlow } from "@/components/flow";
 import { useEffect, useMemo, useState } from "react";
 import { extractSkillTree, SkillTree } from "@/components/SkillTree";
@@ -15,7 +15,8 @@ const parseXML = (xmlString: string): Document => {
 };
 
 export default function CoursePage() {
-  const { courseName: _courseName, tab } = useParams();
+  const { courseName: _courseName, selectedSkill, tab } = useParams();
+  const router = useRouter();
 
   const courseName = useMemo(
     () => decodeURIComponent(_courseName as string),
@@ -37,23 +38,19 @@ export default function CoursePage() {
     });
   }, [courseName]);
 
-  const [selectedSkill, setSelectedSkill] = useState<string>();
-
   const skillTreeViz = useMemo(
     () =>
       skillTree && (
         <SkillTreeFlow
           key="flow"
           skillTree={skillTree}
-          onSkillSelected={(skill) => setSelectedSkill(skill)}
+          onSkillSelected={(skill) => {
+            skill && router.push(`/search/${courseName}/${skill}`);
+          }}
         />
       ),
     [skillTree],
   );
-
-  if (Array.isArray(courseName) || !courseName) {
-    return redirect("/");
-  }
 
   if (!skillTree) {
     return <div>Loading...</div>;
@@ -68,9 +65,7 @@ export default function CoursePage() {
         </div>
         <div className="w-1/2 flex flex-col space-y-4">
           <div className="flex-1 bg-[#242424] p-4 rounded-lg overflow-y-auto">
-            {!!selectedSkill && (
-              <Sidebar selectedSkill={selectedSkill} skillTree={skillTree} />
-            )}
+            <Sidebar skillTree={skillTree} />
           </div>
         </div>
       </div>
