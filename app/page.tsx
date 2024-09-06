@@ -1,9 +1,5 @@
-import Navbar from "../components/Navbar";
+import { SkillTreeFlow } from "./components/flow";
 
 export default function Home() {
-  return (
-    
-       <div>
-       </div>
-  );
+  return <SkillTreeFlow key={"flow"} />;
 }
