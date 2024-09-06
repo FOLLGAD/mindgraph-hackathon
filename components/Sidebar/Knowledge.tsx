@@ -1,6 +1,7 @@
 import { SkillTree } from "@/components/SkillTree";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import Markdown from "react-markdown";
 
 export const Knowledge = ({ skillTree }: { skillTree: SkillTree }) => {
   const { courseName, selectedSkill } = useParams();
@@ -59,5 +60,9 @@ export const Knowledge = ({ skillTree }: { skillTree: SkillTree }) => {
     return <div>Loading...</div>;
   }
 
-  return <div>{knowledge}</div>;
+  return (
+    <div>
+      <Markdown>{knowledge}</Markdown>
+    </div>
+  );
 };
