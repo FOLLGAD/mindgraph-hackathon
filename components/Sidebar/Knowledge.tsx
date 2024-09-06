@@ -1,37 +1,23 @@
-import { CohereClient } from "cohere-ai";
+import { getKnowledge2 } from "@/app/utils";
 import { SkillTree } from "@/components/SkillTree";
+import { useEffect, useState } from "react";
 
-const cohere = new CohereClient({
-  token: "g0JVEcm1i9zLKv4gRoWVIFntNZNadtkdUAryc9uz", // This is your trial API key
-});
+export const Knowledge = ({
+  skillTree,
+  selectedSkill,
+}: {
+  skillTree: SkillTree;
+  selectedSkill: string;
+}) => {
+  const [knowledge, setKnowledge] = useState<string>("");
 
-const getKnowledge = async (skillTree: SkillTree, skillName: string) => {
-  const stream = await cohere.chatStream({
-    model: "command-r-plus-08-2024",
-    message: "what is Inertial Confinement in the field of nuclear fusion",
-    preamble:
-      "You are an education assistant who helps students learn about a topic. You write not too long and not too short.",
-    temperature: 0.3,
-    chatHistory: [
-      {
-        role: "USER",
-        message: `what is ${skillName} in the field of ${skillTree.name}`,
-      },
-    ],
-    promptTruncation: "AUTO",
-    connectors: [{ id: "web-search" }],
-  });
-
-  for await (const chat of stream) {
-    if (chat.eventType === "text-generation") {
-      process.stdout.write(chat.text);
+  useEffect(async () => {
+    const gen = await getKnowledge2(skillTree, selectedSkill);
+    for await (const part of gen) {
+      setKnowledge((p) => p + part);
     }
-    if (chat.eventType === "citation-generation") {
-      console.log(chat);
-    }
-  }
-};
+    return () => {};
+  }, []);
 
-export const Knowledge = () => {
-  return <div></div>;
+  return <div>{knowledge}</div>;
 };
