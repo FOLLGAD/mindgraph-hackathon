@@ -1,9 +1,9 @@
 "use client";
-
 import { useSkillContext } from "@/app/providers";
 import { useParams } from "next/navigation";
 import React, { useState, useEffect } from "react";
 import { MdOutlineSpaceBar } from "react-icons/md";
+import LoadingSpinner from "./LoadingSpinner";
 
 interface QuizQuestion {
   question: string;
@@ -101,7 +101,11 @@ const Quiz: React.FC<QuizProps> = ({ topic }) => {
   };
 
   if (isLoading) {
-    return <div className="text-white">Loading quiz...</div>;
+    return (
+      <div className="h-full w-full flex justify-center items-center min-h-[500px]">
+        <LoadingSpinner />
+      </div>
+    );
   }
 
   if (error) {

@@ -8,6 +8,7 @@ import { useParams } from "next/navigation";
 import { Sidebar } from "@/components/Sidebar/Sidebar";
 import { generateSkillTree } from "@/app/utils";
 import { useSkillContext } from "@/app/providers";
+import LoadingSpinner from "@/components/LoadingSpinner";
 
 const parseXML = (xmlString: string): Document => {
   const parser = new DOMParser();
@@ -58,7 +59,11 @@ export default function CoursePage() {
   );
 
   if (!skillTree) {
-    return <div>Loading...</div>;
+    return (
+      <div className="h-full w-full flex justify-center items-center min-h-[500px]">
+        <LoadingSpinner />
+      </div>
+    );
   }
 
   return (

@@ -36,7 +36,7 @@ export const Knowledge = ({ skillTree }: { skillTree: SkillTree }) => {
 
       const decoder = new TextDecoder();
       // read() returns a promise that resolves when a value has been received
-      reader.read().then(function pump({ done, value }) {
+      reader.read().then(function pump({ done, value }): any {
         if (done) {
           // Do something with last chunk of data then exit reader
           return;
