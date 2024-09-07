@@ -83,7 +83,7 @@ export const Sidebar = ({ skillTree }: { skillTree: SkillTree }) => {
           ]}
         />
       )}
-      {!tab && <p>Select a tab to view the content.</p>}
+      {!tab && <p>Select a tab above to get started.</p>}
     </div>
   );
 };
