@@ -55,7 +55,7 @@ export const Sidebar = ({ skillTree }: { skillTree: SkillTree }) => {
       {tab === "knowledge" && <Knowledge skillTree={skillTree} />}
       {tab === "quiz" && (
         <div className="p-4">
-          <Quiz topic={realSelectedSkill} />
+          <Quiz topic={skillName || realSelectedSkill} />
         </div>
       )}
       {tab === "repetition" && (
