@@ -10,6 +10,13 @@ import { generateSkillTree } from "@/app/utils";
 import { useSkillContext } from "@/app/providers";
 import LoadingSpinner from "@/components/LoadingSpinner";
 
+function toTitleCase(str: string) {
+  return str.replace(
+    /\w\S*/g,
+    (text) => text.charAt(0).toUpperCase() + text.substring(1).toLowerCase(),
+  );
+}
+
 const parseXML = (xmlString: string): Document => {
   const parser = new DOMParser();
   const xmlDoc = parser.parseFromString(xmlString, "text/xml");
@@ -68,9 +75,11 @@ export default function CoursePage() {
 
   return (
     <div className="flex flex-col min-h-screen bg-[#1a1a1a] text-white">
-      <div className="mt-10 ml-4 text-4xl text-white">{courseName}</div>
       <div className="flex flex-1 p-4 space-x-4">
-        <div className="w-1/2 bg-[#242424] p-4 rounded-lg overflow-hidden">
+        <div className="w-1/2 bg-[#242424] p-4 rounded-lg overflow-hidden relative">
+          <div className="text-4xl text-white absolute top-0 left-0 right-0 text-center mt-4">
+            {toTitleCase(courseName)}
+          </div>
           {skillTreeViz}
         </div>
         <div className="w-1/2 flex flex-col space-y-4">
