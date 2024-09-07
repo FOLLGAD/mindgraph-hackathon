@@ -76,8 +76,8 @@ export default function CoursePage() {
   return (
     <div className="flex flex-col min-h-screen bg-[#1a1a1a] text-white">
       <div className="flex flex-1 p-4 space-x-4">
-        <div className="w-1/2 bg-[#242424] p-4 rounded-lg overflow-hidden relative">
-          <div className="text-4xl text-white absolute top-0 left-0 right-0 text-center mt-4">
+        <div className="w-1/2 bg-[#242424] rounded-lg overflow-hidden relative">
+          <div className="text-4xl text-white absolute top-0 left-0 right-0 text-center mt-4 z-10 drop-shadow">
             {toTitleCase(courseName)}
           </div>
           {skillTreeViz}
